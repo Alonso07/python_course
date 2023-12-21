@@ -142,3 +142,4 @@ print(full_board_check(tboard))
 fboard = ['X','X','X','X','X','O','O','O','O']
 print(full_board_check(fboard))
 
+
