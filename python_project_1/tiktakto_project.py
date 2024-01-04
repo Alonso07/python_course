@@ -22,7 +22,7 @@ def player_input():
     
     
 def display_board(board):
-    #os.system('cls')
+    os.system('cls')
     print(" | ".join(board[6:9]))
     print("--+---+---")
     print(" | ".join(board[3:6]))
@@ -36,11 +36,11 @@ def place_marker(board, marker, position):
 
 
 def win_check(board, mark):
-    if len(set(board[0:3])) == 1:
+    if len(set([board[0],board[1],board[2]])) == 1:
         return True
-    if len(set(board[3:6])) == 1:
+    if len(set([board[3],board[4],board[5]])) == 1:
          return True
-    if len(set(board[6:9])) == 1:
+    if len(set([board[6],board[7],board[8]])) == 1:
          return True
     if len(set([board[0],board[3],board[6]])) == 1:
          return True
@@ -81,14 +81,15 @@ def full_board_check(board):
 
 
 def player_choice_pos(board):
-    number = "WRONG"
+    number = "Wrong "
     validated = False
     
     while not validated:
         number = input("Enter new available position (1-9): ")
         if number.isdigit() == True:
-            if number in range[1,9]:
-                if space_check(board, number):
+            numberDig = int(number)
+            if 1 <= numberDig <= 9:
+                if space_check(board, numberDig):
                     validated = True
                 else:
                     print("Space not available!")
@@ -96,10 +97,11 @@ def player_choice_pos(board):
                 print("Value out of range!")
         else:
             print("Input is not digit!")
+    return numberDig
         
         
-def replay():
-    option = "NV":
+def replay_():
+    option = "NV"
     valid_opt = ['Y', 'N']
     while option not in valid_opt:
         option = input("Do you want to replay? (Y/N): ")
@@ -111,35 +113,44 @@ def replay():
         return False
             
     
-#print(choose_first())
-tboard = ['X','2','3','X','X','6','7','8','9']
-#print(space_check(tboard, 2))
-#print(win_check(tboard, 'X'))
-#place_marker(tboard, 'X', 9)
-#print(win_check(tboard, 'X'))
-#display_board(tboard)
-#player_input()
+
 
 print("Welcome to Tic Tac Toe!")
-init_board = ['1','2','3','4','5','6','7','8','9']
+
 replay = True
+
 
 while replay:
     ## set the game up here
+    game_on = True
+    board = ['1','2','3','4','5','6','7','8','9']
     player = choose_first()
     players = player_input()
     
     while game_on:
         # Player 1 Turn
-        
+        display_board(board)
+        position = player_choice_pos(board)
+        board = place_marker(board, players[0], position)
+        if win_check(board, players[0]):
+            print("Player 1 {} won ".format(players[0]))
+            game_on = False
+            break
         
         # Player 2 turn.
+        display_board(board)
+        position = player_choice_pos(board)
+        board = place_marker(board, players[1], position)
+        if win_check(board, players[1]):
+            print("Player 2 {} won ".format(players[1]))
+            game_on = False
+            break
+        
+        if full_board_check(board):
+            print("Game went to tie:")
+            game_on = False
         
         
-        
-
-print(full_board_check(tboard))
-fboard = ['X','X','X','X','X','O','O','O','O']
-print(full_board_check(fboard))
+    replay = replay_()
 
 
